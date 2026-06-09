@@ -1,0 +1,99 @@
+import React, { useEffect, useRef } from "react";
+
+interface ServiceItem {
+  meta: string;
+  title: string;
+  hasBadge?: boolean;
+}
+
+export default function Services() {
+  const sectionRef = useRef<HTMLDivElement | null>(null);
+
+  const services: ServiceItem[] = [
+    {
+      meta: "Office of multiple interest content",
+      title: "Colaborative & partnership",
+    },
+    {
+      meta: "The hanger US Air force digital experimental",
+      title: "We talk about our weight",
+    },
+    {
+      meta: "Delta faucet content, social, digital",
+      title: "Piloting digital confidence",
+      hasBadge: true,
+    },
+  ];
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(el);
+    return () => {
+      if (el) observer.unobserve(el);
+    };
+  }, []);
+
+  return (
+    <section className="services-section scroll-fade" id="services" ref={sectionRef}>
+      <div className="services-container">
+        
+        {/* Section Heading */}
+        <div className="services-header">
+          <h2 className="services-title">
+            What we <span className="highlight-can">can</span>
+            <br />
+            <span className="highlight-offer">offer</span> you!
+          </h2>
+        </div>
+
+        {/* Services Table List */}
+        <div className="services-list" id="services-rows">
+          {services.map((service, index) => (
+            <div className="service-row" key={index}>
+              
+              {/* Left Meta Information Column */}
+              <div className="service-meta-col">
+                <span className="service-meta-text">{service.meta}</span>
+              </div>
+
+              {/* Central Main Title Column */}
+              <div className="service-title-col">
+                <h3 className="service-row-title">
+                  {service.title}
+                  {service.hasBadge && (
+                    <div className="confidence-tape-badge" id="confidence-tape-badge">
+                      <span className="badge-text-inner">CONFIDENCE</span>
+                      <span className="badge-measure-ticks">
+                        <span>|</span><span>|</span><span>|</span><span>|</span><span>|</span><span>|</span>
+                      </span>
+                    </div>
+                  )}
+                </h3>
+              </div>
+
+              {/* Right Arrow Column */}
+              <div className="service-arrow-col">
+                <span className="service-arrow-symbol">──→</span>
+              </div>
+
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </section>
+  );
+}
